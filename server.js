@@ -6,7 +6,7 @@ const express = require('express'),
       route = require('./API/routes/indexRoutes')
 app.use(bodyParsor.json())
    .use(bodyParsor.urlencoded({extended:true}))
-mongoClient.connect('mongodb://localhost;27017/quanlybaiviet',{useNewUrlParser:true,useUnifiedTopology:true})
+mongoClient.connect('mongodb://localhost;27017/quanlybaiviet',{useFindAndModify:false,useNewUrlParser:true,useUnifiedTopology:true})
 route(app)
 
 

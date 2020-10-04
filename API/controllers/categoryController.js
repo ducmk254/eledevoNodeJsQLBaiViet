@@ -1,11 +1,10 @@
 const Category =require('../models/categoryModel')
 const Post = require('../models/postModel')
-
+const PostMulti = require('../models/postModelMulti')
 module.exports.list_all_category = async (req,res)=>{
     try {
-        return res.send(await   Category.find()
-                .populate('posts')
-        )
+        let listCategory = await await   Category.find().populate('posts')
+        return res.send(listCategory)
     } catch (error) {
         return res.send('Loi: ' + error)
     }

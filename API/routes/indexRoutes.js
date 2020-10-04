@@ -1,6 +1,6 @@
 const categoryController = require('../controllers/categoryController')
 const postController = require('../controllers/postController')
-
+const postMultiController = require('../controllers/postmultiController')
 
 module.exports = (app)=>{
     app.route('/categorys')
@@ -13,4 +13,11 @@ module.exports = (app)=>{
         .post(postController.create_new_post)
         .put(postController.change_a_post)
         .delete(postController.remove_a_post)
+
+    app.route('/postmultis')
+       .get(postMultiController.get_post_multi)
+       .post(postMultiController.create_new_postmulti)
+
+    app.route('/postmulti/:postmultiId')
+        .post(postMultiController.change_postmulti)
 }   

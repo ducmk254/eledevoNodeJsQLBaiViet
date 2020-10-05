@@ -39,9 +39,46 @@ module.exports.create_new_postmulti = async (req,res)=>{
 }
 
 module.exports.change_postmulti = async (req,res)=>{
-    res.send('Delete a post multi')
+    //Input postMultiId
+    // {req.body} = {postMultiId, title,content,categoryIds}
+    try {
+        let curentPostMulti = await PostMulti.findById({_id:req.params.postmultiid})
+        // remote all postMulti from olds category
+        for(const cate of curentPostMulti.categorys){
+            await Category.findByIdAndUpdate({_id:cate},{$pull:{posts:curentPostMulti._id}})
+        }
+        // add postMulti to All category
+        for(const cate of req.body.categoryIds){
+            await Category.findByIdAndUpdate({_id:cate},{$push:{posts:curentPostMulti._id}})
+        }
+        // Update again postMulti
+        await curentPostMulti.update({
+            title: req.body.title,
+            content: req.body.content,
+            categorys: req.body.categoryIds
+        })
+        res.status(200).json('Updated')
+
+    } catch (error) {
+        return res.status(500).json(error)
+    }
 }
 
 module.exports.delete_a_postmulti = async (req,res)=>{
-    res.send('Delete a post multi')
+    try {
+        // find by Id for post multi
+        let currentPostMulti = await PostMulti.findById({_id:req.params.postmultiid})
+        console.log(currentPostMulti)
+        // remote curentPostMulti._id from categorys
+        for( let cate of currentPostMulti.categorys){
+            console.log(cate)
+             Category.findByIdAndUpdate(cate,{$pull:{posts:currentPostMulti._id}},{new:true}).exec()
+        }
+        // remove curentPostMulti
+        await currentPostMulti.remove()
+        res.status(200).json('removed!!!')
+    } catch (error) {
+        // return res.status(500).json(error)
+        console.log("Finish")
+    }
 }

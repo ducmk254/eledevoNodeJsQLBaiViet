@@ -18,6 +18,7 @@ module.exports = (app)=>{
        .get(postMultiController.get_post_multi)
        .post(postMultiController.create_new_postmulti)
 
-    app.route('/postmulti/:postmultiId')
-        .post(postMultiController.change_postmulti)
+    app.route('/postmulti/:postmultiid')
+        .put(postMultiController.change_postmulti)
+        .delete(postMultiController.delete_a_postmulti)
 }   
